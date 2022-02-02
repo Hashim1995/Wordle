@@ -9,7 +9,7 @@ const Grid = () => {
   const [fiveth, setFiveth] = useState([]);
   const [sixth, setSixth] = useState([]);
   let rows = [first, second, third, fourth, fiveth, sixth];
-  useEffect(() => {}, [first, second, third, fourth, fiveth, sixth]);
+  useEffect(() => {}, [rows, first, second, third, fourth, fiveth, sixth]);
 
   const handleRemoveItem = (removeState, arr) => {
     const items = arr;
@@ -21,13 +21,11 @@ const Grid = () => {
   };
 
   const deleteFunc = () => {
-    for (var i = 0; i < rows.length; i++) {
-      if (rows[i].length >= 1 && i === rows.length) {
-        console.log(rows[i]);
-        //    console.log(rows[i].lastItem);
-        // for (var z = 0; z < rows[i].length; z++) {
-        //   console.log(rows[i][z]);
-        // }
+    for (var i in rows) {
+      if (rows[i].length < 1) {
+        console.log(rows[i - 1]);
+        rows[i - 1].pop();
+        break;
       }
     }
   };
@@ -39,37 +37,37 @@ const Grid = () => {
       e !== null
         ? setFirst((prev) => [...prev, val])
         : handleRemoveItem(setFirst, first);
-      console.log("1");
+      //console.log("1");
     }
     if (first.length > 4 && second.length <= 4) {
       e !== null
         ? setSecond((prev) => [...prev, val])
         : handleRemoveItem(setSecond, second);
-      console.log("2");
+      //console.log("2");
     }
     if (second.length > 4 && third.length <= 4) {
       e !== null
         ? setThird((prev) => [...prev, val])
         : handleRemoveItem(setThird, third);
-      console.log("3");
+      //console.log("3");
     }
     if (third.length > 4 && fourth.length <= 4) {
       e !== null
         ? setFourth((prev) => [...prev, val])
         : handleRemoveItem(setFourth, fourth);
-      console.log("4");
+      //console.log("4");
     }
     if (fourth.length > 4 && fiveth.length <= 4) {
       e !== null
         ? setFiveth((prev) => [...prev, val])
         : handleRemoveItem(setFiveth, fiveth);
-      console.log("5");
+      //console.log("5");
     }
     if (fiveth.length > 4 && sixth.length <= 4) {
       e !== null
         ? setSixth((prev) => [...prev, val])
         : handleRemoveItem(setSixth, sixth);
-      console.log("6");
+      //console.log("6");
     }
   };
 
