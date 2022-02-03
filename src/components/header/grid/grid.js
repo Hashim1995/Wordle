@@ -1,74 +1,60 @@
 import Style from "./grid.module.scss";
 import { useState, useEffect } from "react";
 import { StepBackwardOutlined, RollbackOutlined } from "@ant-design/icons";
+import { useLayoutEffect } from "react";
 const Grid = () => {
-  const [first, setFirst] = useState([]);
-  const [second, setSecond] = useState([]);
-  const [third, setThird] = useState([]);
-  const [fourth, setFourth] = useState([]);
-  const [fiveth, setFiveth] = useState([]);
-  const [sixth, setSixth] = useState([]);
-  let rows = [first, second, third, fourth, fiveth, sixth];
-  useEffect(() => {}, [rows, first, second, third, fourth, fiveth, sixth]);
-
-  const handleRemoveItem = (removeState, arr) => {
-    const items = arr;
-    if (items.length > 0) {
-      const lastIndex = items.length - 1;
-      removeState(items.filter((item, index) => index !== lastIndex));
-    }
-    console.log("called");
-  };
+  // const [first, setFirst] = useState([]);
+  // const [second, setSecond] = useState([]);
+  // const [third, setThird] = useState([]);
+  // const [fourth, setFourth] = useState([]);
+  // const [fiveth, setFiveth] = useState([]);
+  // const [sixth, setSixth] = useState([]);
+  // let rows = [first, second, third, fourth, fiveth, sixth];
+  const [rows, setRows] = useState({
+    first: [],
+    second: [],
+    third: [],
+    fourth: [],
+    fiveth: [],
+    sixth: [],
+  });
 
   const deleteFunc = () => {
-    for (var i in rows) {
-      if (rows[i].length < 1) {
-        console.log(rows[i - 1]);
-        rows[i - 1].pop();
-        break;
-      }
-    }
+    // for (var i in rows) {
+    //   if (rows[i].length < 1) {
+    //     console.log(rows[i - 1]);
+    //     rows[i - 1].pop();
+    //     break;
+    //   }
+    // }
   };
 
   const addFunc = (e) => {
-    let val = e !== null && e.target.value;
-
-    if (first.length <= 4) {
-      e !== null
-        ? setFirst((prev) => [...prev, val])
-        : handleRemoveItem(setFirst, first);
+    let val = e !== null;
+    if (rows.first.length <= 4) {
+      setRows((prev) => ({ ...prev, val }));
       //console.log("1");
     }
-    if (first.length > 4 && second.length <= 4) {
-      e !== null
-        ? setSecond((prev) => [...prev, val])
-        : handleRemoveItem(setSecond, second);
-      //console.log("2");
-    }
-    if (second.length > 4 && third.length <= 4) {
-      e !== null
-        ? setThird((prev) => [...prev, val])
-        : handleRemoveItem(setThird, third);
-      //console.log("3");
-    }
-    if (third.length > 4 && fourth.length <= 4) {
-      e !== null
-        ? setFourth((prev) => [...prev, val])
-        : handleRemoveItem(setFourth, fourth);
-      //console.log("4");
-    }
-    if (fourth.length > 4 && fiveth.length <= 4) {
-      e !== null
-        ? setFiveth((prev) => [...prev, val])
-        : handleRemoveItem(setFiveth, fiveth);
-      //console.log("5");
-    }
-    if (fiveth.length > 4 && sixth.length <= 4) {
-      e !== null
-        ? setSixth((prev) => [...prev, val])
-        : handleRemoveItem(setSixth, sixth);
-      //console.log("6");
-    }
+    // if (first.length > 4 && second.length <= 4) {
+    //   setSecond((prev) => [...prev, val]);
+    //   //console.log("2");
+    // }
+    // if (second.length > 4 && third.length <= 4) {
+    //   setThird((prev) => [...prev, val]);
+    //   //console.log("3");
+    // }
+    // if (third.length > 4 && fourth.length <= 4) {
+    //   setFourth((prev) => [...prev, val]);
+    //   //console.log("4");
+    // }
+    // if (fourth.length > 4 && fiveth.length <= 4) {
+    //   setFiveth((prev) => [...prev, val]);
+    //   //console.log("5");
+    // }
+    // if (fiveth.length > 4 && sixth.length <= 4) {
+    //   setSixth((prev) => [...prev, val]);
+    //   //console.log("6");
+    // }
   };
 
   return (
@@ -84,7 +70,6 @@ const Grid = () => {
                     key={10 + index}
                     readOnly
                     type="text"
-                    value={rows[rowI][index]}
                   />
                 );
               })}
