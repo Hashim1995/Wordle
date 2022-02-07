@@ -1,81 +1,50 @@
 import Style from "./grid.module.scss";
 import { useState, useEffect } from "react";
 import { StepBackwardOutlined, RollbackOutlined } from "@ant-design/icons";
-import { useLayoutEffect } from "react";
 const Grid = () => {
-  // const [first, setFirst] = useState([]);
-  // const [second, setSecond] = useState([]);
-  // const [third, setThird] = useState([]);
-  // const [fourth, setFourth] = useState([]);
-  // const [fiveth, setFiveth] = useState([]);
-  // const [sixth, setSixth] = useState([]);
-  // let rows = [first, second, third, fourth, fiveth, sixth];
-  const [rows, setRows] = useState({
-    first: [],
-    second: [],
-    third: [],
-    fourth: [],
-    fiveth: [],
-    sixth: [],
-  });
-
-  const deleteFunc = () => {
-    // for (var i in rows) {
-    //   if (rows[i].length < 1) {
-    //     console.log(rows[i - 1]);
-    //     rows[i - 1].pop();
-    //     break;
-    //   }
-    // }
-  };
+  const [data, setData] = useState(
+    Array.from({ length: 6 }, (v) => Array.from({ length: 5 }, (v) => null))
+  );
+  const [count, setCounter] = useState({ col: 0, row: 0 });
 
   const addFunc = (e) => {
-    let val = e !== null;
-    if (rows.first.length <= 4) {
-      setRows((prev) => ({ ...prev, val }));
-      //console.log("1");
-    }
-    // if (first.length > 4 && second.length <= 4) {
-    //   setSecond((prev) => [...prev, val]);
-    //   //console.log("2");
-    // }
-    // if (second.length > 4 && third.length <= 4) {
-    //   setThird((prev) => [...prev, val]);
-    //   //console.log("3");
-    // }
-    // if (third.length > 4 && fourth.length <= 4) {
-    //   setFourth((prev) => [...prev, val]);
-    //   //console.log("4");
-    // }
-    // if (fourth.length > 4 && fiveth.length <= 4) {
-    //   setFiveth((prev) => [...prev, val]);
-    //   //console.log("5");
-    // }
-    // if (fiveth.length > 4 && sixth.length <= 4) {
-    //   setSixth((prev) => [...prev, val]);
-    //   //console.log("6");
-    // }
+    const audio = document.getElementById("audio");
+    audio.play();
+    let value = e.target.value;
+    setCounter((prev) => ({
+      ...prev,
+      col: prev.col < 4 ? prev.col + 1 : (prev.col = -1),
+      row: prev.col == 5 ? alert("5di") : prev.row,
+    }));
+    let copy = [...data];
+    copy[count.row][count.col] = value;
+    setData(copy);
   };
 
   return (
     <div className={Style.Wrap}>
+      <audio
+        id="audio"
+        src="https://www.fesliyanstudios.com/play-mp3/648"
+      ></audio>
       <div className={Style.Grid}>
-        {[...Array(6)].map((rowE, rowI) => {
+        {/* {data.map((row, index) => {
           return (
-            <div key={rowI} className={Style.Row}>
-              {[...Array(5)].map((e, index) => {
+            <div key={index} className={Style.Row}>
+              {row.map((item, index) => {
                 return (
                   <input
                     className={index}
                     key={10 + index}
                     readOnly
                     type="text"
+                    value={item}
                   />
                 );
               })}
             </div>
           );
-        })}
+        })} */}
       </div>
 
       <div className={Style.Keyboard}>
@@ -165,10 +134,7 @@ const Grid = () => {
           <button onClick={(e) => addFunc(e)} value="M">
             m
           </button>
-          <button
-            onClick={() => deleteFunc(null)}
-            style={{ background: "#3a3a3a" }}
-          >
+          <button style={{ background: "#3a3a3a" }}>
             <StepBackwardOutlined />
           </button>
         </div>
