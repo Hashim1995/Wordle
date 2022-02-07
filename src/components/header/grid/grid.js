@@ -1,33 +1,42 @@
 import Style from "./grid.module.scss";
 import { useState, useEffect } from "react";
 import { StepBackwardOutlined, RollbackOutlined } from "@ant-design/icons";
+
 const Grid = () => {
   const [data, setData] = useState(
-    Array.from({ length: 6 }, (v) =>
-      Array.from({ length: 5 }, (v) => undefined)
-    )
+    Array.from({ length: 6 }, (v) => Array.from({ length: 5 }, (v) => ""))
   );
   const [count, setCounter] = useState({ col: 0, row: 0 });
   const [btndis, setBtndis] = useState(false);
 
-  const addFunc = (e) => {
-    // for (var i = -1; i < data.length; i++) {
-    //   for (var z = 0; z < data[i].length; z++) {
-    //     if (data[i][z].length >= 5) {
-    //       setBtndis(true);
-    //       break;
-    //     }
-    //   }
-    // }
-
-    const audio = document.getElementById("audio");
-    audio.play();
-    let value = e.target.value;
+  const counterFunc = () => {
     setCounter((prev) => ({
       ...prev,
       col: prev.col < 4 ? prev.col + 1 : 0,
       row: prev.col > 3 ? prev.row + 1 : prev.row,
     }));
+  };
+
+  const deleteFunc = () => {
+    let copy = [...data];
+    copy[count.row][count.col - 1] = "";
+    setData(copy);
+
+    setCounter((prev) => ({
+      ...prev,
+      row: prev.row,
+      col: prev.col - 1,
+    }));
+  };
+
+  const addFunc = (e) => {
+    count.col > 3 && setBtndis(true);
+    const audio = document.getElementById("audio");
+    audio.play();
+    counterFunc();
+
+    let value = e.target.value;
+
     let copy = [...data];
     copy[count.row][count.col] = value;
     setData(copy);
@@ -250,7 +259,10 @@ const Grid = () => {
           >
             m
           </button>
-          <button style={{ background: "#3a3a3a" }}>
+          <button
+            onClick={() => deleteFunc()}
+            style={{ background: "#2d5f7e" }}
+          >
             <StepBackwardOutlined />
           </button>
         </div>
