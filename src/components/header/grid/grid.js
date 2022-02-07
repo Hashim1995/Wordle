@@ -5,7 +5,7 @@ const Grid = () => {
   const [data, setData] = useState(
     Array.from({ length: 6 }, (v) => Array.from({ length: 5 }, (v) => null))
   );
-  const [count, setCounter] = useState({ col: 0, row: 0 });
+  const [count, setCounter] = useState({ col: -1, row: -1 });
 
   const addFunc = (e) => {
     const audio = document.getElementById("audio");
@@ -14,7 +14,7 @@ const Grid = () => {
     setCounter((prev) => ({
       ...prev,
       col: prev.col < 4 ? prev.col + 1 : (prev.col = -1),
-      row: prev.col === 0 ? prev.row + 1 : prev.row,
+      row: prev.col === -1 ? prev.row + 1 : prev.row,
     }));
     let copy = [...data];
     copy[count.row][count.col] = value;
