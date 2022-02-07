@@ -3,18 +3,30 @@ import { useState, useEffect } from "react";
 import { StepBackwardOutlined, RollbackOutlined } from "@ant-design/icons";
 const Grid = () => {
   const [data, setData] = useState(
-    Array.from({ length: 6 }, (v) => Array.from({ length: 5 }, (v) => null))
+    Array.from({ length: 6 }, (v) =>
+      Array.from({ length: 5 }, (v) => undefined)
+    )
   );
-  const [count, setCounter] = useState({ col: -1, row: -1 });
+  const [count, setCounter] = useState({ col: 0, row: 0 });
+  const [btndis, setBtndis] = useState(false);
 
   const addFunc = (e) => {
+    // for (var i = -1; i < data.length; i++) {
+    //   for (var z = 0; z < data[i].length; z++) {
+    //     if (data[i][z].length >= 5) {
+    //       setBtndis(true);
+    //       break;
+    //     }
+    //   }
+    // }
+
     const audio = document.getElementById("audio");
     audio.play();
     let value = e.target.value;
     setCounter((prev) => ({
       ...prev,
-      col: prev.col < 4 ? prev.col + 1 : (prev.col = -1),
-      row: prev.col === -1 ? prev.row + 1 : prev.row,
+      col: prev.col < 4 ? prev.col + 1 : 0,
+      row: prev.col > 3 ? prev.row + 1 : prev.row,
     }));
     let copy = [...data];
     copy[count.row][count.col] = value;
@@ -28,7 +40,7 @@ const Grid = () => {
         src="https://www.fesliyanstudios.com/play-mp3/648"
       ></audio>
       <div className={Style.Grid}>
-        {/* {data.map((row, index) => {
+        {data.map((row, index) => {
           return (
             <div key={index} className={Style.Row}>
               {row.map((item, index) => {
@@ -44,68 +56,144 @@ const Grid = () => {
               })}
             </div>
           );
-        })} */}
+        })}
       </div>
 
       <div className={Style.Keyboard}>
         <div className={Style.Row}>
-          <button onClick={(e) => addFunc(e)} value="Q">
+          <button
+            disabled={btndis ? true : false}
+            onClick={(e) => addFunc(e)}
+            value="Q"
+          >
             q
           </button>
-          <button onClick={(e) => addFunc(e)} value="W">
+          <button
+            disabled={btndis ? true : false}
+            onClick={(e) => addFunc(e)}
+            value="W"
+          >
             w
           </button>
-          <button onClick={(e) => addFunc(e)} value="E">
+          <button
+            disabled={btndis ? true : false}
+            onClick={(e) => addFunc(e)}
+            value="E"
+          >
             e
           </button>
-          <button onClick={(e) => addFunc(e)} value="R">
+          <button
+            disabled={btndis ? true : false}
+            onClick={(e) => addFunc(e)}
+            value="R"
+          >
             r
           </button>
-          <button onClick={(e) => addFunc(e)} value="T">
+          <button
+            disabled={btndis ? true : false}
+            onClick={(e) => addFunc(e)}
+            value="T"
+          >
             t
           </button>
-          <button onClick={(e) => addFunc(e)} value="Y">
+          <button
+            disabled={btndis ? true : false}
+            onClick={(e) => addFunc(e)}
+            value="Y"
+          >
             y
           </button>
-          <button onClick={(e) => addFunc(e)} value="U">
+          <button
+            disabled={btndis ? true : false}
+            onClick={(e) => addFunc(e)}
+            value="U"
+          >
             u
           </button>
-          <button onClick={(e) => addFunc(e)} value="I">
+          <button
+            disabled={btndis ? true : false}
+            onClick={(e) => addFunc(e)}
+            value="I"
+          >
             i
           </button>
-          <button onClick={(e) => addFunc(e)} value="O">
+          <button
+            disabled={btndis ? true : false}
+            onClick={(e) => addFunc(e)}
+            value="O"
+          >
             o
           </button>
-          <button onClick={(e) => addFunc(e)} value="P">
+          <button
+            disabled={btndis ? true : false}
+            onClick={(e) => addFunc(e)}
+            value="P"
+          >
             p
           </button>
         </div>
         <div className={Style.Row}>
-          <button onClick={(e) => addFunc(e)} value="A">
+          <button
+            disabled={btndis ? true : false}
+            onClick={(e) => addFunc(e)}
+            value="A"
+          >
             a
           </button>
-          <button onClick={(e) => addFunc(e)} value="S">
+          <button
+            disabled={btndis ? true : false}
+            onClick={(e) => addFunc(e)}
+            value="S"
+          >
             s
           </button>
-          <button onClick={(e) => addFunc(e)} value="D">
+          <button
+            disabled={btndis ? true : false}
+            onClick={(e) => addFunc(e)}
+            value="D"
+          >
             d
           </button>
-          <button onClick={(e) => addFunc(e)} value="F">
+          <button
+            disabled={btndis ? true : false}
+            onClick={(e) => addFunc(e)}
+            value="F"
+          >
             f
           </button>
-          <button onClick={(e) => addFunc(e)} value="G">
+          <button
+            disabled={btndis ? true : false}
+            onClick={(e) => addFunc(e)}
+            value="G"
+          >
             g
           </button>
-          <button onClick={(e) => addFunc(e)} value="H">
+          <button
+            disabled={btndis ? true : false}
+            onClick={(e) => addFunc(e)}
+            value="H"
+          >
             h
           </button>
-          <button onClick={(e) => addFunc(e)} value="J">
+          <button
+            disabled={btndis ? true : false}
+            onClick={(e) => addFunc(e)}
+            value="J"
+          >
             j
           </button>
-          <button onClick={(e) => addFunc(e)} value="K">
+          <button
+            disabled={btndis ? true : false}
+            onClick={(e) => addFunc(e)}
+            value="K"
+          >
             k
           </button>
-          <button onClick={(e) => addFunc(e)} value="L">
+          <button
+            disabled={btndis ? true : false}
+            onClick={(e) => addFunc(e)}
+            value="L"
+          >
             l
           </button>
         </div>
@@ -113,25 +201,53 @@ const Grid = () => {
           <button value="↵" style={{ background: "green" }}>
             <RollbackOutlined />
           </button>
-          <button onClick={(e) => addFunc(e)} value="Z">
+          <button
+            disabled={btndis ? true : false}
+            onClick={(e) => addFunc(e)}
+            value="Z"
+          >
             z
           </button>
-          <button onClick={(e) => addFunc(e)} value="X">
+          <button
+            disabled={btndis ? true : false}
+            onClick={(e) => addFunc(e)}
+            value="X"
+          >
             x
           </button>
-          <button onClick={(e) => addFunc(e)} value="C">
+          <button
+            disabled={btndis ? true : false}
+            onClick={(e) => addFunc(e)}
+            value="C"
+          >
             c
           </button>
-          <button onClick={(e) => addFunc(e)} value="V">
+          <button
+            disabled={btndis ? true : false}
+            onClick={(e) => addFunc(e)}
+            value="V"
+          >
             v
           </button>
-          <button onClick={(e) => addFunc(e)} value="B">
+          <button
+            disabled={btndis ? true : false}
+            onClick={(e) => addFunc(e)}
+            value="B"
+          >
             b
           </button>
-          <button onClick={(e) => addFunc(e)} value="N">
+          <button
+            disabled={btndis ? true : false}
+            onClick={(e) => addFunc(e)}
+            value="N"
+          >
             n
           </button>
-          <button onClick={(e) => addFunc(e)} value="M">
+          <button
+            disabled={btndis ? true : false}
+            onClick={(e) => addFunc(e)}
+            value="M"
+          >
             m
           </button>
           <button style={{ background: "#3a3a3a" }}>
