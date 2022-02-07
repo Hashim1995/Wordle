@@ -14,7 +14,7 @@ const Grid = () => {
     setCounter((prev) => ({
       ...prev,
       col: prev.col < 4 ? prev.col + 1 : (prev.col = -1),
-      row: prev.col == 5 ? alert("5di") : prev.row,
+      row: prev.col === 0 ? prev.row + 1 : prev.row,
     }));
     let copy = [...data];
     copy[count.row][count.col] = value;
