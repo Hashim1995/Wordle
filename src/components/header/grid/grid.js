@@ -9,40 +9,61 @@ const Grid = () => {
   const [count, setCounter] = useState({ col: 0, row: 0 });
   const [btndis, setBtndis] = useState(false);
 
+  const result = {
+    first: {
+      pass: null,
+      wrong: null,
+      wrongIndex: null,
+      correct: null,
+    },
+  };
+  const word = "ALPHA";
+
   const counterFunc = () => {
     setCounter((prev) => ({
       ...prev,
-      col: prev.col < 4 ? prev.col + 1 : 0,
-      row: prev.col > 3 ? prev.row + 1 : prev.row,
+      col: prev.col < 5 ? prev.col + 1 : prev.col,
     }));
   };
 
-  const deleteFunc = async () => {
-    let copy = [...data];
-    copy[count.row][count.col - 1] = "";
-    await setCounter((prev) => ({
+  const deleteFunc = () => {
+    setBtndis(false);
+    setCounter((prev) => ({
       ...prev,
-      col:
-        prev.col === 0 && prev.row !== 0
-          ? (prev.col = 5)
-          : prev.col > 0 && prev.col - 1,
-      row: prev.row !== 0 ? prev.row - 1 : 0,
+      col: prev.row === 1 ? (prev.col = 5) : prev.col > 0 ? prev.col - 1 : 0,
     }));
 
+    let copy = [...data];
+    copy[count.row][count.col - 1] = "";
     setData(copy);
   };
 
   const addFunc = (e) => {
-    //  count.col > 3 && setBtndis(true);
+    count.col > 3 && setBtndis(true);
     const audio = document.getElementById("audio");
     audio.play();
-    counterFunc();
 
     let value = e.target.value;
 
     let copy = [...data];
     copy[count.row][count.col] = value;
     setData(copy);
+    counterFunc();
+  };
+
+  const enter = () => {
+    const userWord = data[count.row].join("");
+
+    for (var i = 0; i < 5; i++) {
+      console.log(userWord[i]);
+    }
+
+    if (userWord === word) {
+      result.first.pass = true;
+    } else {
+      result.first.pass = false;
+    }
+    console.log(result);
   };
 
   return (
@@ -210,7 +231,7 @@ const Grid = () => {
           </button>
         </div>
         <div className={Style.Row}>
-          <button value="↵" style={{ background: "green" }}>
+          <button onClick={enter} value="↵" style={{ background: "green" }}>
             <RollbackOutlined />
           </button>
           <button
