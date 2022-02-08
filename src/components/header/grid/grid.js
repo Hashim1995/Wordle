@@ -8,13 +8,14 @@ const Grid = () => {
   );
   const [count, setCounter] = useState({ col: 0, row: 0 });
   const [btndis, setBtndis] = useState(false);
+  const [s, setResult] = useState(null);
 
   const result = {
     first: {
-      pass: null,
-      wrong: null,
-      wrongIndex: null,
-      correct: null,
+      pass: false,
+      wrong: [],
+      wrongIndex: [],
+      correct: [],
     },
   };
   const word = "ALPHA";
@@ -54,15 +55,26 @@ const Grid = () => {
   const enter = () => {
     const userWord = data[count.row].join("");
 
-    for (var i = 0; i < 5; i++) {
-      console.log(userWord[i]);
-    }
+    data[count.row].map((item, i) => {
+      // console.log("user : " + data[count.row][i]);
+      // console.log("word : " + word[i]);
+      if (data[count.row][i] === word[i]) {
+        result.first.correct.push(i);
+      } else {
+        result.first.wrong.push(i);
+      }
+      for (var z = 0; z < word.length; z++) {
+        if (data[count.row][i].includes(word[z])) {
+          result.first.wrongIndex.push(i);
+        }
+      }
+    });
 
-    if (userWord === word) {
-      result.first.pass = true;
-    } else {
-      result.first.pass = false;
-    }
+    // if (userWord === word) {
+    //   result.first.pass = true;
+    // } else {
+    //   result.first.pass = false;
+    // }
     console.log(result);
   };
 
@@ -76,11 +88,11 @@ const Grid = () => {
         {data.map((row, index) => {
           return (
             <div key={index} className={Style.Row}>
-              {row.map((item, index) => {
+              {row.map((item, i) => {
                 return (
                   <input
-                    className={index}
-                    key={10 + index}
+                    className={result.first.correct[i]}
+                    key={10 + i}
                     readOnly
                     type="text"
                     value={item}
