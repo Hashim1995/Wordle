@@ -17,20 +17,23 @@ const Grid = () => {
     }));
   };
 
-  const deleteFunc = () => {
+  const deleteFunc = async () => {
     let copy = [...data];
     copy[count.row][count.col - 1] = "";
-    setData(copy);
-
-    setCounter((prev) => ({
+    await setCounter((prev) => ({
       ...prev,
-      row: prev.row,
-      col: prev.col - 1,
+      col:
+        prev.col === 0 && prev.row !== 0
+          ? (prev.col = 5)
+          : prev.col > 0 && prev.col - 1,
+      row: prev.row !== 0 ? prev.row - 1 : 0,
     }));
+
+    setData(copy);
   };
 
   const addFunc = (e) => {
-    count.col > 3 && setBtndis(true);
+    //  count.col > 3 && setBtndis(true);
     const audio = document.getElementById("audio");
     audio.play();
     counterFunc();
