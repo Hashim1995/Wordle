@@ -3,23 +3,22 @@ import { useState, useEffect } from "react";
 import { StepBackwardOutlined, RollbackOutlined } from "@ant-design/icons";
 
 const Grid = () => {
+  const word = "ALPHA";
   const [data, setData] = useState(
     Array.from({ length: 6 }, (v) => Array.from({ length: 5 }, (v) => ""))
   );
   const [count, setCounter] = useState({ col: 0, row: 0 });
   const [btndis, setBtndis] = useState(false);
-  const [s, setResult] = useState(null);
+  const [result, setResult] = useState(
+    Array.from({ length: 5 }, (v) => new ResultConstructor(false, [], [], []))
+  );
 
-  const result = {
-    first: {
-      pass: false,
-      wrong: [],
-      wrongIndex: [],
-      correct: [],
-    },
-  };
-  const word = "ALPHA";
-
+  function ResultConstructor(pass, wrong, wrongIndex, correct) {
+    this.pass = pass;
+    this.wrong = wrong;
+    this.wrongIndex = wrongIndex;
+    this.correct = correct;
+  }
   const counterFunc = () => {
     setCounter((prev) => ({
       ...prev,
@@ -54,28 +53,38 @@ const Grid = () => {
 
   const enter = () => {
     const userWord = data[count.row].join("");
+    let correctArr = [];
+    let wrongArr = [];
+    let wrongIndexArr = [];
+
+    if (word === userWord) {
+      let copy = [...result];
+      copy[count.row].pass = true;
+      setResult(copy);
+    }
 
     data[count.row].map((item, i) => {
-      // console.log("user : " + data[count.row][i]);
-      // console.log("word : " + word[i]);
       if (data[count.row][i] === word[i]) {
-        result.first.correct.push(i);
-      } else {
-        result.first.wrong.push(i);
-      }
-      for (var z = 0; z < word.length; z++) {
-        if (data[count.row][i].includes(word[z])) {
-          result.first.wrongIndex.push(i);
-        }
+        correctArr.push(i);
+
+        let copy = [...result];
+        copy[count.row].correct = correctArr;
+        setResult(copy);
+      } else if (word.includes(data[count.row][i])) {
+        wrongIndexArr.push(i);
+
+        let copy = [...result];
+        copy[count.row].wrongIndex = wrongIndexArr;
+        setResult(copy);
+      } else if (!word.includes(data[count.row][i])) {
+        wrongArr.push(i);
+
+        let copy = [...result];
+        copy[count.row].wrong = wrongArr;
+        !result[count.row].wrongIndex.includes(data[count.row][i]) &&
+          setResult(copy);
       }
     });
-
-    // if (userWord === word) {
-    //   result.first.pass = true;
-    // } else {
-    //   result.first.pass = false;
-    // }
-    console.log(result);
   };
 
   return (
@@ -85,13 +94,18 @@ const Grid = () => {
         src="https://www.fesliyanstudios.com/play-mp3/648"
       ></audio>
       <div className={Style.Grid}>
-        {data.map((row, index) => {
+        {data.map((rowEl, index) => {
           return (
             <div key={index} className={Style.Row}>
-              {row.map((item, i) => {
+              {rowEl.map((item, i) => {
                 return (
                   <input
-                    className={result.first.correct[i]}
+                    // className={
+                    //   result.count.row.correct.includes(i) &&
+                    //   index === count.row
+                    //     ? Style.correct
+                    //     : Style.wrong
+                    // }
                     key={10 + i}
                     readOnly
                     type="text"

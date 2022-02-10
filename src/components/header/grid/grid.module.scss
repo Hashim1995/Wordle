@@ -6,6 +6,12 @@
     .Row {
       display: flex;
       justify-content: space-between;
+      .correct{
+        background-color: #1b791b !important;
+      }
+      .wrong{
+        background-color: #4e4e4e !important;
+      }
       input {
         margin: 5px;
         width: 70px;
@@ -18,6 +24,7 @@
         color: white;
         font-weight: bold;
       }
+      
     }
   }
 
