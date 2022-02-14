@@ -13,9 +13,9 @@ const Grid = () => {
     Array.from({ length: 5 }, (v) => new ResultConstructor(false, [], [], []))
   );
 
-  function ResultConstructor(pass, wrong, wrongIndex, correct) {
+  function ResultConstructor(pass, missing, wrongIndex, correct) {
     this.pass = pass;
-    this.wrong = wrong;
+    this.missing = missing;
     this.wrongIndex = wrongIndex;
     this.correct = correct;
   }
@@ -30,7 +30,14 @@ const Grid = () => {
     setBtndis(false);
     setCounter((prev) => ({
       ...prev,
-      col: prev.row === 1 ? (prev.col = 5) : prev.col > 0 ? prev.col - 1 : 0,
+      col:
+        prev.row > 0
+          ? prev.col > 0
+            ? prev.col - 1
+            : prev.col
+          : prev.col > 0
+          ? prev.col - 1
+          : 0,
     }));
 
     let copy = [...data];
@@ -51,10 +58,10 @@ const Grid = () => {
     counterFunc();
   };
 
-  const enter = () => {
+  const checkResultFunc = () => {
     const userWord = data[count.row].join("");
     let correctArr = [];
-    let wrongArr = [];
+    let missingArr = [];
     let wrongIndexArr = [];
 
     if (word === userWord) {
@@ -62,7 +69,7 @@ const Grid = () => {
       copy[count.row].pass = true;
       setResult(copy);
     }
-
+    // correct
     data[count.row].map((item, i) => {
       if (data[count.row][i] === word[i]) {
         correctArr.push(i);
@@ -70,21 +77,39 @@ const Grid = () => {
         let copy = [...result];
         copy[count.row].correct = correctArr;
         setResult(copy);
-      } else if (word.includes(data[count.row][i])) {
+      }
+    });
+    //wrong index
+    data[count.row].map((item, i) => {
+      if (data[count.row][i] !== word[i] && word.includes(data[count.row][i])) {
         wrongIndexArr.push(i);
 
         let copy = [...result];
         copy[count.row].wrongIndex = wrongIndexArr;
         setResult(copy);
-      } else if (!word.includes(data[count.row][i])) {
-        wrongArr.push(i);
-
-        let copy = [...result];
-        copy[count.row].wrong = wrongArr;
-        !result[count.row].wrongIndex.includes(data[count.row][i]) &&
-          setResult(copy);
       }
     });
+    // missing
+    data[count.row].map((item, i) => {
+      if (
+        data[count.row][i] !== word[i] &&
+        !word.includes(data[count.row][i])
+      ) {
+        missingArr.push(i);
+
+        let copy = [...result];
+        copy[count.row].missing = missingArr;
+
+        setResult(copy);
+      }
+    });
+
+    setCounter((prev) => ({
+      ...prev,
+      col: 0,
+      row: prev.row + 1,
+    }));
+    setBtndis(false);
   };
 
   return (
@@ -100,12 +125,15 @@ const Grid = () => {
               {rowEl.map((item, i) => {
                 return (
                   <input
-                    // className={
-                    //   result.count.row.correct.includes(i) &&
-                    //   index === count.row
-                    //     ? Style.correct
-                    //     : Style.wrong
-                    // }
+                    className={
+                      result[count.row].correct.includes(i)
+                        ? Style.correct
+                        : result[count.row].missing.includes(i)
+                        ? Style.missing
+                        : result[count.row].wrongIndex.includes(i)
+                        ? Style.wrongIndex
+                        : null
+                    }
                     key={10 + i}
                     readOnly
                     type="text"
@@ -257,7 +285,12 @@ const Grid = () => {
           </button>
         </div>
         <div className={Style.Row}>
-          <button onClick={enter} value="↵" style={{ background: "green" }}>
+          <button
+            onClick={checkResultFunc}
+            disabled={btndis ? false : true}
+            value="↵"
+            style={{ background: "green" }}
+          >
             <RollbackOutlined />
           </button>
           <button

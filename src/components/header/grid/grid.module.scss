@@ -9,8 +9,11 @@
       .correct{
         background-color: #1b791b !important;
       }
-      .wrong{
+      .missing{
         background-color: #4e4e4e !important;
+      }
+      .wrongIndex{
+        background-color: #d4a931 !important;
       }
       input {
         margin: 5px;
