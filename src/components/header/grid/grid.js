@@ -10,7 +10,7 @@ const Grid = () => {
   const [count, setCounter] = useState({ col: 0, row: 0 });
   const [btndis, setBtndis] = useState(false);
   const [result, setResult] = useState(
-    Array.from({ length: 5 }, (v) => new ResultConstructor(false, [], [], []))
+    Array.from({ length: 6 }, (v) => new ResultConstructor(false, [], [], []))
   );
 
   function ResultConstructor(pass, missing, wrongIndex, correct) {
@@ -126,11 +126,17 @@ const Grid = () => {
                 return (
                   <input
                     className={
-                      result[count.row].correct.includes(i)
+                      count.row > 0 &&
+                      count.row - 1 === index &&
+                      result[count.row - 1].correct.includes(i)
                         ? Style.correct
-                        : result[count.row].missing.includes(i)
+                        : count.row > 0 &&
+                          count.row - 1 === index &&
+                          result[count.row - 1].missing.includes(i)
                         ? Style.missing
-                        : result[count.row].wrongIndex.includes(i)
+                        : count.row > 0 &&
+                          count.row - 1 === index &&
+                          result[count.row - 1].wrongIndex.includes(i)
                         ? Style.wrongIndex
                         : null
                     }
