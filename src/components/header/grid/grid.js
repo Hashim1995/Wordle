@@ -3,29 +3,53 @@ import { useState, useEffect } from "react";
 import { StepBackwardOutlined, RollbackOutlined } from "@ant-design/icons";
 
 const Grid = () => {
+  //its correct word
   const word = "ALPHA";
+
+  //length of word
+  const colLength = 5;
+
+  //length of user's chance
+  const rowLength = 6;
+
+  //user's value
   const [data, setData] = useState(
-    Array.from({ length: 6 }, (v) => Array.from({ length: 5 }, (v) => ""))
-  );
-  const [count, setCounter] = useState({ col: 0, row: 0 });
-  const [btndis, setBtndis] = useState(false);
-  const [result, setResult] = useState(
-    Array.from({ length: 6 }, (v) => new ResultConstructor(false, [], [], []))
+    Array.from({ length: rowLength }, (v) =>
+      Array.from({ length: colLength }, (v) => "")
+    )
   );
 
+  //counter which is counting the user's real time col and row
+  const [count, setCounter] = useState({ col: 0, row: 0 });
+
+  // its toggle for enter and delete buttons
+  const [btndis, setBtndis] = useState(false);
+
+  //its result value for each row
+  const [result, setResult] = useState(
+    Array.from(
+      { length: rowLength },
+      (v) => new ResultConstructor(false, [], [], [])
+    )
+  );
+
+  //its constructor object for result
   function ResultConstructor(pass, missing, wrongIndex, correct) {
     this.pass = pass;
     this.missing = missing;
     this.wrongIndex = wrongIndex;
     this.correct = correct;
   }
+
+  //the function excuted when user click any keyboard button or delete function. (its decrease or increase counter's col and row)
   const counterFunc = () => {
     setCounter((prev) => ({
       ...prev,
-      col: prev.col < 5 ? prev.col + 1 : prev.col,
+      col: prev.col < colLength ? prev.col + 1 : prev.col,
     }));
   };
 
+  // when the function excuted, its remove last element from active row.
   const deleteFunc = () => {
     setBtndis(false);
     setCounter((prev) => ({
@@ -45,8 +69,9 @@ const Grid = () => {
     setData(copy);
   };
 
+  // when user click any keyboard button its add a button's value to  last element from active row.
   const addFunc = (e) => {
-    count.col > 3 && setBtndis(true);
+    count.col > colLength - 2 && setBtndis(true);
     const audio = document.getElementById("audio");
     audio.play();
 
@@ -58,6 +83,7 @@ const Grid = () => {
     counterFunc();
   };
 
+  // when user click enter button its check the last row's value and create an object which ic include "correctValue", "missingValue", "pass" and "wrongIndexValue"
   const checkResultFunc = () => {
     const userWord = data[count.row].join("");
     let correctArr = [];
@@ -127,15 +153,15 @@ const Grid = () => {
                   <input
                     className={
                       count.row > 0 &&
-                      count.row - 1 === index &&
+                      index < count.row &&
                       result[count.row - 1].correct.includes(i)
                         ? Style.correct
                         : count.row > 0 &&
-                          count.row - 1 === index &&
+                          index < count.row &&
                           result[count.row - 1].missing.includes(i)
                         ? Style.missing
                         : count.row > 0 &&
-                          count.row - 1 === index &&
+                          index < count.row &&
                           result[count.row - 1].wrongIndex.includes(i)
                         ? Style.wrongIndex
                         : null
