@@ -148,7 +148,7 @@ const Grid = () => {
         {data.map((rowEl, index) => {
           return (
             <div key={index} className={Style.Row}>
-              {rowEl.map((item, i) => {
+              {rowEl.map((colVal, i) => {
                 return (
                   <input
                     className={
@@ -169,7 +169,7 @@ const Grid = () => {
                     key={10 + i}
                     readOnly
                     type="text"
-                    value={item}
+                    value={colVal}
                   />
                 );
               })}
